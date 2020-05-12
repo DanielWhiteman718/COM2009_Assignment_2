@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.01834902589507543 -0.9993944610870311 -0.029563903620197646 4.475225842813369
-  position 0.37200528000295374 0.0974748974480089 -0.10386782898061939
+  orientation -0.12331490699730725 0.9746480052978808 0.18669413349408634 1.964645941613898
+  position 0.342892930028144 0.20820965306786876 -0.1331342092756838
 }
 TexturedBackground {
 }
@@ -14,6 +14,50 @@ RectangleArena {
 Robot {
   translation 0 0.07 0
   children [
+    DEF BODY Solid {
+      children [
+        DEF G0 Group {
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0.4
+              }
+              geometry Box {
+                size 0.07 0.03 0.12
+              }
+            }
+            Transform {
+              translation 0 -0.018 -0.045
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.007
+                    subdivision 2
+                  }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -0.015 -0.045
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Cylinder {
+                    height 0.009
+                    radius 0.008
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+      name "solid(2)"
+      boundingObject USE G0
+    }
     HingeJoint {
       jointParameters HingeJointParameters {
         anchor 0.055 0 0.04
@@ -58,16 +102,8 @@ Robot {
         physics USE WHEEL_PH
       }
     }
-    DEF BODY Shape {
-      appearance PBRAppearance {
-        metalness 0.4
-      }
-      geometry Box {
-        size 0.07 0.03 0.12
-      }
-    }
   ]
-  boundingObject USE BODY
+  boundingObject USE G0
   physics Physics {
   }
 }
