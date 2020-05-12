@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.12331490699730725 0.9746480052978808 0.18669413349408634 1.964645941613898
-  position 0.342892930028144 0.20820965306786876 -0.1331342092756838
+  orientation -0.6854055928707459 0.7173869256502894 0.12480052951621466 0.4424067151331914
+  position 0.21557111391696082 0.2761190150439948 0.5991316494677925
 }
 TexturedBackground {
 }
@@ -19,7 +19,7 @@ Robot {
         DEF G0 Group {
           children [
             Shape {
-              appearance PBRAppearance {
+              appearance DEF BODY_APR PBRAppearance {
                 metalness 0.4
               }
               geometry Box {
@@ -48,6 +48,29 @@ Robot {
                   geometry Cylinder {
                     height 0.009
                     radius 0.008
+                  }
+                }
+              ]
+            }
+            Transform {
+              translation 0 0.02 0.025
+              children [
+                Shape {
+                  appearance USE BODY_APR
+                  geometry Box {
+                    size 0.05 0.02 0.07
+                  }
+                }
+              ]
+            }
+            Transform {
+              translation 0 0.0131 -0.031
+              rotation 1 0 0 -0.3
+              children [
+                Shape {
+                  appearance USE BODY_APR
+                  geometry Box {
+                    size 0.05 0.02 0.05
                   }
                 }
               ]
@@ -101,6 +124,53 @@ Robot {
         boundingObject USE WHEEL
         physics USE WHEEL_PH
       }
+    }
+    Camera {
+      translation 0 0.006 0.06
+      children [
+        Group {
+          children [
+            Transform {
+              translation 0 0 0.002
+              rotation 1 0 0 1.5707996938995747
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Cylinder {
+                    height 0.002
+                    radius 0.004
+                  }
+                }
+              ]
+            }
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.2 0.2 0.2
+                metalness 0.6
+              }
+              geometry Box {
+                size 0.04 0.01 0.003
+              }
+            }
+          ]
+        }
+      ]
+    }
+    Lidar {
+      translation 0 0.037 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.137255 0.137255 0.137255
+            metalness 0.8
+          }
+          geometry Cylinder {
+            height 0.014
+            radius 0.01
+          }
+        }
+      ]
     }
   ]
   boundingObject USE G0
