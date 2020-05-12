@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.8451192059199877 0.5136429232395061 0.1481366774001104 0.6137767480976409
-  position 0.23687656747515834 0.3334561258702385 0.509047788714553
+  orientation 0.01834902589507543 -0.9993944610870311 -0.029563903620197646 4.475225842813369
+  position 0.37200528000295374 0.0974748974480089 -0.10386782898061939
 }
 TexturedBackground {
 }
@@ -12,13 +12,62 @@ TexturedBackgroundLight {
 RectangleArena {
 }
 Robot {
+  translation 0 0.07 0
   children [
-    Shape {
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.055 0 0.04
+      }
+      device [
+        RotationalMotor {
+          name "wheel_right"
+        }
+      ]
+      endPoint DEF WHEEL_RIGHT Solid {
+        translation 0.055 0 0.04
+        rotation 0 0 1 1.5708003061004252
+        children [
+          DEF WHEEL Shape {
+            appearance PBRAppearance {
+              baseColor 0.145098 0.145098 0.145098
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.03
+              radius 0.025
+            }
+          }
+        ]
+        boundingObject USE WHEEL
+        physics DEF WHEEL_PH Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.055 0 0.04
+      }
+      endPoint DEF WHEEL_LEFT Solid {
+        translation -0.055 0 0.04
+        rotation 0 0 1 1.5707996938995747
+        children [
+          USE WHEEL
+        ]
+        name "solid(1)"
+        boundingObject USE WHEEL
+        physics USE WHEEL_PH
+      }
+    }
+    DEF BODY Shape {
       appearance PBRAppearance {
+        metalness 0.4
       }
       geometry Box {
-        size 0.1 0.1 0.1
+        size 0.07 0.03 0.12
       }
     }
   ]
+  boundingObject USE BODY
+  physics Physics {
+  }
 }
