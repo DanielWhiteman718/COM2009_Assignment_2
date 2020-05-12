@@ -1,5 +1,13 @@
 #VRML_SIM R2020a utf8
 WorldInfo {
+  contactProperties [
+    ContactProperties {
+      material2 "body"
+      coulombFriction [
+        0
+      ]
+    }
+  ]
 }
 Viewpoint {
   orientation -0.6854055928707459 0.7173869256502894 0.12480052951621466 0.4424067151331914
@@ -79,6 +87,7 @@ Robot {
         }
       ]
       name "solid(2)"
+      contactMaterial "body"
       boundingObject USE G0
     }
     HingeJoint {
@@ -114,6 +123,11 @@ Robot {
       jointParameters HingeJointParameters {
         anchor -0.055 0 0.04
       }
+      device [
+        RotationalMotor {
+          name "wheel_left"
+        }
+      ]
       endPoint DEF WHEEL_LEFT Solid {
         translation -0.055 0 0.04
         rotation 0 0 1 1.5707996938995747
