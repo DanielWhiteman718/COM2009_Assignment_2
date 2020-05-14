@@ -23,6 +23,9 @@ motorRight.setVelocity(0.0)
 ds = robot.getLidar('lidar')
 ds.enable(timestep)
 
+cam = robot.getCamera('camera')
+cam.enable(timestep)
+
 motorLeft.setVelocity(6.3)
 motorRight.setVelocity(6.3)
 # Main loop:

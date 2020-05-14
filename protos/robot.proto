@@ -1,22 +1,8 @@
-#VRML_SIM R2020a utf8
-WorldInfo {
-}
-Viewpoint {
-  orientation -0.5102128588883978 0.8252000373203884 0.24233806352151419 1.0188435008717884
-  position 1.697311579501644 1.287725847885183 1.4320486776926487
-}
-Viewpoint {
-  orientation -0.6825226418336398 0.7200684066086526 0.12515723386406863 0.4442035410929504
-  position 0.32872173192330834 0.39046715280186217 0.9418224303603485
-  follow "robot:camera"
-}
-TexturedBackground {
-}
-TexturedBackgroundLight {
-}
-RectangleArena {
-}
-Robot {
+PROTO robot [
+  
+]
+{
+  Robot {
   translation 0 0.07 0
   children [
     DEF BODY Solid {
@@ -188,4 +174,5 @@ Robot {
   physics Physics {
   }
   controller "Assignment_2_controller"
+}
 }
