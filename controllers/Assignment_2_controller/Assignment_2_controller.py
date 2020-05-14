@@ -2,7 +2,7 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot, DistanceSensor, Motor
+from controller import Robot, DistanceSensor, Motor, Lidar
 
 # create the Robot instance.
 robot = Robot()
@@ -19,8 +19,10 @@ motorLeft.setPosition(float('inf'))
 motorRight.setPosition(float('inf'))
 motorLeft.setVelocity(0.0)
 motorRight.setVelocity(0.0)
-#  ds = robot.getDistanceSensor('dsname')
-#  ds.enable(timestep)
+
+ds = robot.getLidar('lidar')
+ds.enable(timestep)
+
 motorLeft.setVelocity(6.3)
 motorRight.setVelocity(6.3)
 # Main loop:
