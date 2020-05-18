@@ -1,9 +1,14 @@
 PROTO Robot2 [
-  
+  field SFVec3f    translation  -1.523 0.05 1.535
+  field SFVec3f    position     0 0 0
+  field SFRotation rotation     0 1 0 3.14159
+  field SFFloat    bodyMass     1  
 ]
 {
   Robot {
-  translation 0 0.07 0
+  translation IS translation
+  rotation IS rotation
+  position IS position
   children [
     DEF BODY Solid {
       children [

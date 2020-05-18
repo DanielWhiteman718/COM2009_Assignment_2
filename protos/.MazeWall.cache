@@ -1,0 +1,11 @@
+Webots Proto Cache File version 1.4
+protoFileHash: a1a4397efcc07cce1f0c338e2d263c9c
+containsDevices: 0
+baseType: Solid
+slotType: 
+parameters: translation,rotation,name,length
+tags: 
+license: 
+licenseUrl: 
+documentationUrl: 
+info: Plywood\smaze\swall\selement\swith\scustom\slength\sfield.\n
