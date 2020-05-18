@@ -6,8 +6,8 @@ Viewpoint {
   position 1.697311579501644 1.287725847885183 1.4320486776926487
 }
 Viewpoint {
-  orientation -0.5902377546303434 0.8000811597826523 0.1071892287955119 0.3797535221319298
-  position 0.28775676892535723 0.24004896710788529 1.0176732347895368
+  orientation -0.8870813299304325 0.40914860955448523 0.21373846024636425 1.0352066517328178
+  position 0.04416524955871992 0.2069185407530377 0.12857172282801932
 }
 TexturedBackground {
 }
@@ -136,7 +136,8 @@ Robot {
       }
     }
     Camera {
-      translation 0 0.006 0.06
+      translation 0 0.006 0.063
+      rotation 0 1 0 3.141592653589793
       children [
         Group {
           children [
@@ -153,15 +154,6 @@ Robot {
                   }
                 }
               ]
-            }
-            Shape {
-              appearance PBRAppearance {
-                baseColor 0.2 0.2 0.2
-                metalness 0.6
-              }
-              geometry Box {
-                size 0.04 0.01 0.003
-              }
             }
           ]
         }
