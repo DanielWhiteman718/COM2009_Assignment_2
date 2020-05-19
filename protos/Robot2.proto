@@ -8,8 +8,10 @@ PROTO Robot2 [
   Robot {
   translation IS translation
   rotation IS rotation
-  position IS position
   children [
+    DistanceSensor {
+      translation 0 0.037 0.03
+    }
     DEF BODY Solid {
       children [
         DEF G0 Group {
@@ -89,7 +91,7 @@ PROTO Robot2 [
       ]
       endPoint DEF WHEEL_RIGHT Solid {
         translation 0.055 0 0.04
-        rotation 0 0 1 1.5708003061004252
+        rotation 1.5700893347542974e-16 0 1 1.5708003061004254
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -118,7 +120,7 @@ PROTO Robot2 [
       ]
       endPoint DEF WHEEL_LEFT Solid {
         translation -0.055 0 0.04
-        rotation 0 0 1 1.5707996938995747
+        rotation 3.925224538394047e-17 0 1 1.5707996938995747
         children [
           USE WHEEL
         ]
@@ -129,6 +131,7 @@ PROTO Robot2 [
     }
     Camera {
       translation 0 0.006 0.06
+      rotation 0 1 0 3.14159
       children [
         Group {
           children [
@@ -161,6 +164,7 @@ PROTO Robot2 [
     }
     Lidar {
       translation 0 0.037 0.03
+      rotation 0 1 0 3.14159
       children [
         Shape {
           appearance PBRAppearance {
@@ -173,6 +177,7 @@ PROTO Robot2 [
           }
         }
       ]
+      maxRange 1.5
     }
   ]
   boundingObject USE G0
