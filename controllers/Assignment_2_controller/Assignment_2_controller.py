@@ -78,31 +78,31 @@ while robot.step(timestep) != -1:
         mode_start = robot.getTime()
     
     # going parallel to the wall
-    if ratio >= 1.1 and ratio <= 1.2 and robot.getTime() - 0.2 > mode_start:
+    if ratio >= 1.1 and ratio <= 1.2 and robot.getTime() - 0.1 > mode_start:
         if mode != 'straight':
             print('Going straight')
             mode = 'straight'
             
-        motorLeft.setVelocity(2)
-        motorRight.setVelocity(2)
+        motorLeft.setVelocity(10)
+        motorRight.setVelocity(10)
         mode_start = robot.getTime()
     
     # need to turn right    
-    elif ratio > 1.2 and robot.getTime() - 0.2 > mode_start:
+    elif ratio > 1.2 and robot.getTime() - 0.1 > mode_start:
         if mode != 'right':
             print('Turning right')
             mode = 'right'
             
-        motorLeft.setVelocity(3)
-        motorRight.setVelocity(0.5)
+        motorLeft.setVelocity(10)
+        motorRight.setVelocity(2)
         mode_start = robot.getTime()
     
     # need to turn left
-    elif ratio < 1.1 and robot.getTime() - 0.2 > mode_start:
+    elif ratio < 1.1 and robot.getTime() - 0.1 > mode_start:
         if mode != 'left':
             print('Turning left')
             mode = 'left'
             
-        motorLeft.setVelocity(0.5)
-        motorRight.setVelocity(3)
+        motorLeft.setVelocity(2)
+        motorRight.setVelocity(10)
         mode_start = robot.getTime()
