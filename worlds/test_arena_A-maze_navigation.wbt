@@ -11,8 +11,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.5327551640537469 0.7618742255864898 0.3684014109107777 4.80915265758186
-  position -1.7333871015367293 0.3462066288113432 1.6044420167857643
+  orientation 0.8556410739892324 0.4553471762415633 0.2460432921080911 5.156657545854394
+  position -2.101058286098338 1.9343541685472816 2.331859225928833
   follow "robot"
 }
 TexturedBackground {
@@ -274,9 +274,6 @@ Robot {
   translation -1.523 0.05 1.535
   rotation 0 1 0 3.14159
   children [
-    DistanceSensor {
-      translation 0 0.037 0.03
-    }
     DEF BODY Solid {
       children [
         DEF G0 Group {

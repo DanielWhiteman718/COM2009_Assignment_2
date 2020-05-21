@@ -40,7 +40,7 @@ start_time = robot.getTime()
 
 # Main loop:
 while robot.step(timestep) != -1:
-    if robot.getTime() - 2 < start_time:
+    if robot.getTime() - 0.5 < start_time:
         continue
     
     if start:
@@ -70,13 +70,12 @@ while robot.step(timestep) != -1:
     # turn left if wall dead ahead
     if front < 0.24 and mode != 'wall_ahead':
         mode = 'wall_ahead'    
-        motorLeft.setVelocity(2)
+        motorLeft.setVelocity(1.1)
         motorRight.setVelocity(10)
-        mode_start = robot.getTime()
         continue
     
     # robot is too close to wall AND is going into the wall 
-    if lidar_0 < 0.07 and mode != 'collision_avoid' and ratio <= 1.15:
+    if lidar_0 < 0.08 and mode != 'collision_avoid' and ratio <= 1.15:
         mode = 'collision_avoid'
         motorRight.setVelocity(10)
         motorLeft.setVelocity(3)
@@ -90,23 +89,22 @@ while robot.step(timestep) != -1:
         continue
     
     # going parallel to the wall (lidar distances and wall make ~(30 60 90) triangle)
-    if ratio >= 1.12 and ratio <= 1.19 and mode!= 'straight':
+    if ratio >= 1.12 and ratio <= 1.17 and mode!= 'straight':
         mode = 'straight'   
         motorLeft.setVelocity(10)
         motorRight.setVelocity(10)
-        mode_start = robot.getTime()
         continue
     
     # need to turn right (30* distance too short)
-    if ratio > 1.19 and mode != 'wall_ahead' and robot.getTime() - 0.06 > mode_start and mode != 'right':
+    if ratio > 1.18 and mode != 'wall_ahead' and mode != 'right':
         mode = 'right'
-        motorLeft.setVelocity(9.5)
+        motorLeft.setVelocity(10)
         motorRight.setVelocity(3)
         mode_start = robot.getTime()
         continue
     
     # need to turn left (30* distance too long)
-    if ratio < 1.12 and robot.getTime() - 0.05 > mode_start and mode != 'wall_ahead' and mode !='left':
+    if ratio < 1.12 and mode != 'wall_ahead' and mode !='left' and robot.getTime() - 0.3 > mode_start:
         mode = 'left'
         motorLeft.setVelocity(3)
         motorRight.setVelocity(10)
