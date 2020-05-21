@@ -45,8 +45,8 @@ while robot.step(timestep) != -1:
     
     if start:
         #run motors
-        motorLeft.setVelocity(2)
-        motorRight.setVelocity(2)
+        motorLeft.setVelocity(10)
+        motorRight.setVelocity(10)
         start = False
         
     # lidar data
@@ -68,9 +68,9 @@ while robot.step(timestep) != -1:
     ratio = round(lidar_30 / lidar_0, 2)
     
     # turn left if wall dead ahead
-    if front < 0.22 and mode != 'wall_ahead':
+    if front < 0.24 and mode != 'wall_ahead':
         mode = 'wall_ahead'    
-        motorLeft.setVelocity(3)
+        motorLeft.setVelocity(2)
         motorRight.setVelocity(10)
         mode_start = robot.getTime()
         continue
@@ -90,7 +90,7 @@ while robot.step(timestep) != -1:
         continue
     
     # going parallel to the wall (lidar distances and wall make ~(30 60 90) triangle)
-    if ratio >= 1.12 and ratio <= 1.2 and mode!= 'straight':
+    if ratio >= 1.12 and ratio <= 1.19 and mode!= 'straight':
         mode = 'straight'   
         motorLeft.setVelocity(10)
         motorRight.setVelocity(10)
@@ -98,7 +98,7 @@ while robot.step(timestep) != -1:
         continue
     
     # need to turn right (30* distance too short)
-    if ratio > 1.2 and mode != 'wall_ahead' and robot.getTime() - 0.06 > mode_start and mode != 'right':
+    if ratio > 1.19 and mode != 'wall_ahead' and robot.getTime() - 0.06 > mode_start and mode != 'right':
         mode = 'right'
         motorLeft.setVelocity(9.5)
         motorRight.setVelocity(3)
