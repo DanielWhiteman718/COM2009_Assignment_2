@@ -68,41 +68,47 @@ while robot.step(timestep) != -1:
     ratio = round(lidar_30 / lidar_0, 2)
     
     # turn left if wall dead ahead
-    if front < 0.22:
-        if mode != 'left':
-            print('Turning left')
-            mode = 'left'
-            
-        motorLeft.setVelocity(0.5)
+    if front < 0.22 and mode != 'wall_ahead':
+        mode = 'wall_ahead'    
+        motorLeft.setVelocity(3)
+        motorRight.setVelocity(10)
+        mode_start = robot.getTime()
+        continue
+    
+    # robot is too close to wall AND is going into the wall 
+    if lidar_0 < 0.07 and mode != 'collision_avoid' and ratio <= 1.15:
+        mode = 'collision_avoid'
+        motorRight.setVelocity(10)
+        motorLeft.setVelocity(3)
+        continue
+    
+    # robot was too close to the wall and is now turning left, go straight once it's parallel
+    if mode == 'collision_avoid' and ratio > 1.15:
+        motorRight.setVelocity(10)
+        motorLeft.setVelocity(10)
+        mode = 'straight'
+        continue
+    
+    # going parallel to the wall (lidar distances and wall make ~(30 60 90) triangle)
+    if ratio >= 1.12 and ratio <= 1.2 and mode!= 'straight':
+        mode = 'straight'   
+        motorLeft.setVelocity(10)
+        motorRight.setVelocity(10)
+        mode_start = robot.getTime()
+        continue
+    
+    # need to turn right (30* distance too short)
+    if ratio > 1.2 and mode != 'wall_ahead' and robot.getTime() - 0.06 > mode_start and mode != 'right':
+        mode = 'right'
+        motorLeft.setVelocity(9.5)
         motorRight.setVelocity(3)
         mode_start = robot.getTime()
+        continue
     
-    # going parallel to the wall
-    if ratio >= 1.1 and ratio <= 1.2 and robot.getTime() - 0.1 > mode_start:
-        if mode != 'straight':
-            print('Going straight')
-            mode = 'straight'
-            
-        motorLeft.setVelocity(10)
+    # need to turn left (30* distance too long)
+    if ratio < 1.12 and robot.getTime() - 0.05 > mode_start and mode != 'wall_ahead' and mode !='left':
+        mode = 'left'
+        motorLeft.setVelocity(3)
         motorRight.setVelocity(10)
         mode_start = robot.getTime()
-    
-    # need to turn right    
-    elif ratio > 1.2 and robot.getTime() - 0.1 > mode_start:
-        if mode != 'right':
-            print('Turning right')
-            mode = 'right'
-            
-        motorLeft.setVelocity(10)
-        motorRight.setVelocity(2)
-        mode_start = robot.getTime()
-    
-    # need to turn left
-    elif ratio < 1.1 and robot.getTime() - 0.1 > mode_start:
-        if mode != 'left':
-            print('Turning left')
-            mode = 'left'
-            
-        motorLeft.setVelocity(2)
-        motorRight.setVelocity(10)
-        mode_start = robot.getTime()
+        continue
