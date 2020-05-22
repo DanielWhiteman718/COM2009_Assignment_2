@@ -1,0 +1,253 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.1674676704475642 0.9172227419591475 0.36146510341637267 3.945251871444142
+  position -3.0339041807353597 3.103637554944238 -2.121488757611498
+  followType "Pan and Tilt Shot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  size 3.66 3.66
+  tileSize 3.66 3.66
+  appearance PBRAppearance {
+    baseColor 0.9 0.9 0.9
+    baseColorMap ImageTexture {
+      url [
+        "test_arena_B-textures/test_arena_B-search_and_beaconing.png"
+      ]
+      repeatS FALSE
+      repeatT FALSE
+    }
+    roughness 1
+    metalness 0
+  }
+}
+DEF ARENA_WALLS Group {
+  children [
+    Solid {
+      translation 1.79 0.15 0.04
+      children [
+        DEF ARENA_WALL_SHAPE Shape {
+          appearance PBRAppearance {
+            baseColor 0.701961 0.701961 0.701961
+            roughness 1
+          }
+          geometry DEF ARENA_WALL_GEOM Box {
+            size 0.08 0.3 3.58
+          }
+        }
+      ]
+      name "wall1"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation -0.04 0.15 1.79
+      rotation 0 1 0 1.5707996938995747
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall2"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation -1.79 0.15 -0.04
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall3"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+    Solid {
+      translation 0.04 0.15 -1.79
+      rotation 0 1 0 -1.5707996938995747
+      children [
+        USE ARENA_WALL_SHAPE
+      ]
+      name "wall4"
+      boundingObject USE ARENA_WALL_GEOM
+    }
+  ]
+}
+DEF MAZE_WALLS Group {
+  children [
+    MazeWall {
+      translation -1.357 0.15 0.779
+      rotation 0 -1 0 -5.307179586466759e-06
+      name "maze wall custom(30)"
+      length 0.75
+    }
+    MazeWall {
+      translation -0.401 0.15 -0.574
+      rotation 0 -1 0 -5.307179586466759e-06
+      name "maze wall custom(1)"
+      length 0.95
+    }
+    MazeWall {
+      translation 0.467 0.15 -0.276
+      rotation 0 -1 0 0.6544936938995747
+      name "maze wall custom(2)"
+      length 0.95
+    }
+    MazeWall {
+      translation 0.848 0.15 0.302
+      rotation 0 -1 0 1.5707896938995747
+      name "maze wall custom(3)"
+      length 0.55
+    }
+    DEF ZONE_A_WALLS Group {
+    }
+    DEF ZONE_B_WALLS Group {
+    }
+    DEF ZONE_C_WALLS Group {
+    }
+  ]
+}
+DEF BEACONS Group {
+  children [
+    DEF RED_CYL Solid {
+      translation -0.0759672 0.2 -0.285755
+      children [
+        DEF BCN_RED Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.4
+            radius 0.15
+          }
+        }
+      ]
+      boundingObject USE BCN_RED
+      physics DEF BCN_PHYS Physics {
+        density -1
+        mass 0.5
+      }
+      recognitionColors [
+        1 0 0
+      ]
+    }
+    DEF FCA_CYL Solid {
+      translation -0.356726 0.1 -1.51029
+      children [
+        DEF BCN_FCA Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.2
+            radius 0.2
+          }
+        }
+      ]
+      name "solid(2)"
+      boundingObject USE BCN_FCA
+      physics USE BCN_PHYS
+      recognitionColors [
+        1 0 1
+      ]
+    }
+    DEF TEAL_BOX Solid {
+      translation 1.45023 0.2 1.47189
+      children [
+        DEF BCN_TEAL Shape {
+          appearance PBRAppearance {
+            baseColor 0 0.5 0.5
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.45 0.4 0.45
+          }
+        }
+      ]
+      name "solid(1)"
+      boundingObject USE BCN_TEAL
+      physics USE BCN_PHYS
+      recognitionColors [
+        0 0.5 0.5
+      ]
+    }
+    DEF GRN_RECT Solid {
+      translation 0.701167 0.15 -0.375253
+      rotation 0 1 0 -0.6544996938995746
+      children [
+        DEF BCN_GRN Shape {
+          appearance PBRAppearance {
+            baseColor 0 0.5 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.6 0.3 0.3
+          }
+        }
+      ]
+      name "solid(3)"
+      boundingObject USE BCN_GRN
+      physics USE BCN_PHYS
+      recognitionColors [
+        0 0.5 0
+      ]
+    }
+    DEF BLU_RECT Solid {
+      translation -1.42411 0.11 0.336374
+      rotation 0 1 0 1.0471996938995747
+      children [
+        DEF BCN_BLU Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0.5
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.6 0.22 0.25
+          }
+        }
+      ]
+      name "solid(4)"
+      boundingObject USE BCN_BLU
+      physics USE BCN_PHYS
+      recognitionColors [
+        0 0 0.5
+      ]
+    }
+  ]
+}
+StartZone {
+  translation -1.47 0 1.488
+  rotation 0 1 0 3.141592653589793
+  colour 0 0.5 0
+  name "start zone A"
+  recColSlot [
+    0 0.5 0
+  ]
+}
+StartZone {
+  translation -0.865 0 -1.47
+  rotation 0 1 0 -1.5707996938995747
+  colour 0 0.5 0.5
+  name "start zone B"
+  recColSlot [
+    0 0.5 0.5
+  ]
+}
+StartZone {
+  translation 1.471 0 -1.489
+  colour 0 0 0.5
+  name "start zone C"
+  recColSlot [
+    0 0 0.5
+  ]
+}
+Robot2 {
+  translation 0 0.05 1.535
+}
