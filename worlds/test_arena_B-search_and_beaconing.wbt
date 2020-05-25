@@ -1,10 +1,18 @@
 #VRML_SIM R2020a utf8
 WorldInfo {
   basicTimeStep 16
+  contactProperties [
+    ContactProperties {
+      material2 "body"
+      coulombFriction [
+        0
+      ]
+    }
+  ]
 }
 Viewpoint {
-  orientation 0.1674676704475642 0.9172227419591475 0.36146510341637267 3.945251871444142
-  position -3.0339041807353597 3.103637554944238 -2.121488757611498
+  orientation 0.5423411041764439 -0.6124137534106641 -0.5751656468828245 4.20230040709518
+  position -0.7990149097755387 3.8859074403733436 0.7744493084957406
   followType "Pan and Tilt Shot"
 }
 TexturedBackground {
@@ -248,6 +256,222 @@ StartZone {
     0 0 0.5
   ]
 }
-Robot2 {
-  translation 0 0.05 1.535
+Robot {
+  translation -1.33254 0.05 1.3798
+  rotation 0 1 0 3.14158
+  children [
+    SpotLight {
+      attenuation 0 0 1
+      beamWidth 0.3
+      cutOffAngle 0.3
+      direction 0 0 1
+      intensity 4
+      location 0 0.02 0
+      radius 3
+    }
+    SpotLight {
+      attenuation 0 0 1
+      beamWidth 0.3
+      cutOffAngle 0.3
+      radius 3
+    }
+    DEF BODY Solid {
+      children [
+        DEF G0 Group {
+          children [
+            Shape {
+              appearance DEF BODY_APR PBRAppearance {
+                metalness 0.4
+              }
+              geometry Box {
+                size 0.07 0.03 0.1
+              }
+            }
+            Transform {
+              translation 0 -0.018 -0.04
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Sphere {
+                    radius 0.007
+                    subdivision 2
+                  }
+                }
+              ]
+            }
+            Transform {
+              translation 0 -0.015 -0.04
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Cylinder {
+                    height 0.009
+                    radius 0.008
+                  }
+                }
+              ]
+            }
+            Transform {
+              translation 0 0.022 0.015
+              children [
+                Shape {
+                  appearance USE BODY_APR
+                  geometry Box {
+                    size 0.05 0.014 0.07
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+      name "solid(2)"
+      contactMaterial "body"
+      boundingObject USE G0
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.055 0 0.04
+      }
+      device [
+        RotationalMotor {
+          name "wheel_left"
+        }
+      ]
+      endPoint DEF WHEEL_RIGHT Solid {
+        translation 0.055 0 0.04
+        rotation 8.24296900746008e-16 5.495312671640054e-16 1 1.5708003061004208
+        children [
+          DEF WHEEL Shape {
+            appearance PBRAppearance {
+              baseColor 0.145098 0.145098 0.145098
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.01
+              radius 0.025
+            }
+          }
+        ]
+        boundingObject USE WHEEL
+        physics DEF WHEEL_PH Physics {
+          density -1
+          mass 0.05
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.055 0 0.04
+      }
+      device [
+        RotationalMotor {
+          name "wheel_right"
+        }
+      ]
+      endPoint DEF WHEEL_LEFT Solid {
+        translation -0.055 0 0.04
+        rotation -8.193906223897597e-16 1.6191551220875492e-16 1 1.570799693899569
+        children [
+          USE WHEEL
+        ]
+        name "solid(1)"
+        boundingObject USE WHEEL
+        physics USE WHEEL_PH
+      }
+    }
+    Camera {
+      translation 0 0.006 0.05
+      rotation 0 1 0 3.14159
+      children [
+        Group {
+          children [
+            Transform {
+              translation 0 0 0.002
+              rotation 1 0 0 1.5707996938995747
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Cylinder {
+                    height 0.002
+                    radius 0.004
+                  }
+                }
+              ]
+            }
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.2 0.2 0.2
+                metalness 0.6
+              }
+              geometry Box {
+                size 0.04 0.01 0.003
+              }
+            }
+          ]
+        }
+      ]
+    }
+    Camera {
+      translation -5.30718e-08 0.023 -0.02
+      children [
+        Group {
+          children [
+            Transform {
+              translation 0 0 0.002
+              rotation 1 0 0 1.5707996938995747
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Cylinder {
+                    height 0.002
+                    radius 0.004
+                  }
+                }
+              ]
+            }
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.2 0.2 0.2
+                metalness 0.6
+              }
+              geometry Box {
+                size 0.04 0.01 0.003
+              }
+            }
+          ]
+        }
+      ]
+      name "camera_back"
+    }
+    Lidar {
+      translation 2.65359e-08 0.036 0.02
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.137255 0.137255 0.137255
+            metalness 0.8
+          }
+          geometry Cylinder {
+            height 0.014
+            radius 0.01
+          }
+        }
+      ]
+      horizontalResolution 180
+      fieldOfView 3.14159
+      maxRange 1.5
+    }
+  ]
+  boundingObject USE G0
+  physics Physics {
+    density -1
+    mass 0.2
+  }
+  controller "free_wander"
 }
