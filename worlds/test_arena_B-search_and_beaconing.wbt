@@ -11,8 +11,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.5423411041764439 -0.6124137534106641 -0.5751656468828245 4.20230040709518
-  position -0.7990149097755387 3.8859074403733436 0.7744493084957406
+  orientation -0.9883568041917032 0.09767554611649351 0.11666325599265649 1.6915794210275559
+  position 0.9544108455997764 2.9927102295338712 -1.4672845659775124
   followType "Pan and Tilt Shot"
 }
 TexturedBackground {
@@ -90,7 +90,7 @@ DEF MAZE_WALLS Group {
       length 0.75
     }
     MazeWall {
-      translation -0.401 0.15 -0.574
+      translation 0.729 0.15 -1.254
       rotation 0 -1 0 -5.307179586466759e-06
       name "maze wall custom(1)"
       length 0.95
@@ -257,8 +257,8 @@ StartZone {
   ]
 }
 Robot {
-  translation -1.33254 0.05 1.3798
-  rotation 0 1 0 3.14158
+  translation 1.46747 0.05 -1.5102
+  rotation 0 -1 0 8.98519e-06
   children [
     SpotLight {
       attenuation 0 0 1
@@ -473,5 +473,5 @@ Robot {
     density -1
     mass 0.2
   }
-  controller "free_wander"
+  controller "Assignment_2_controller"
 }
