@@ -11,8 +11,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.5423411041764439 -0.6124137534106641 -0.5751656468828245 4.20230040709518
-  position -0.7990149097755387 3.8859074403733436 0.7744493084957406
+  orientation 0.8316425394306237 0.5351231617468923 0.14837078004577867 5.591506839430289
+  position -2.50603517037517 3.1046606614639156 4.20066179109153
   followType "Pan and Tilt Shot"
 }
 TexturedBackground {
@@ -473,5 +473,5 @@ Robot {
     density -1
     mass 0.2
   }
-  controller "free_wander"
+  controller "Assignment_2_controller"
 }
