@@ -8,7 +8,11 @@ def wanderer(rangeImage):
     ranges = np.array(rangeImage)[:, 2] * -1
     force = np.sum(angles * ranges * 10)
     
-    if force > 120:
+    if rangeImage[90][2] < 0.21:
+        motorLeft.setVelocity(10)
+        motorRight.setVelocity(-10)
+    
+    elif force > 120:
         motorLeft.setVelocity(10)
         motorRight.setVelocity(2)
         
@@ -28,13 +32,6 @@ def wanderer(rangeImage):
 def stopMotors():
     motorLeft.setVelocity(0)
     motorRight.setVelocity(0)
-    
-def turn_90(direction):
-    motorRight.setPosition(1)
-    motorLeft.setPosition(-1)
-
-    #motorRight.setVelocity(-1)
-    #motorLeft.setVelocity(1)
 
 
 
@@ -46,7 +43,6 @@ timestep = int(robot.getBasicTimeStep())
 #setup motors
 motorLeft = robot.getMotor('wheel_left')
 motorRight = robot.getMotor('wheel_right')
-
 motorLeft.setPosition(float('inf'))
 motorRight.setPosition(float('inf'))
 motorLeft.setVelocity(0.0)
@@ -66,46 +62,41 @@ mode = 'straight'
 mode_start = robot.getTime()
 start_time = robot.getTime()
 
-mode = 'free'
+angles = np.cos(np.deg2rad(np.linspace(0, 179, 180)))  # that's for free wanderer force calculation
 
-angles = np.cos(np.deg2rad(np.linspace(0, 179, 180)))
-base_color = [0, 0, 0]
-# Main loop:
+base_color = [0, 0, 0]  # to hold colour of the starting zone
+
 
 colours = [[128,0,0],[255,0,0],[128,128,0],[255,255,0],[0,128,0],[0,255,0],
         [0,128,128],[0,255,255],[0,0,128],[0,0,255],[128,0,128],[255,0,255]]
 
+
+# algorithm for the maze part
 def Maze(start, mode, mode_start):
     while robot.step(timestep) != -1:
         if robot.getTime() - 0.5 < start_time:
             continue
         
+        # after 0.5s start the motors and get colour of starting zone
         if start:
-            #run motors
             motorLeft.setVelocity(10)
             motorRight.setVelocity(10)
+            global base_color
+            base_color = np.array(cam_back.getImageArray())[32][32]    # read the color of the base
             start = False
+            
             
         # lidar data
         rangeImage = ds.getRangeImageArray()
         
-        # lidar debuging
-        #front = rangeImage[89][2]
-        #left = rangeImage[0][2]
-        #right = rangeImage[179][2]
-        #front = "{:.2f}".format(front)
-        #left = "{:.2f}".format(left)
-        #right = "{:.2f}".format(right)
-        #print(front + " | " + left + " | " + right + "      Front | Left | Right")
-        
         lidar_0 = rangeImage[179][2]   # distance to right 
         lidar_30 = rangeImage[149][2]  # distance to right minus 30 degrees
-        front = rangeImage[90][2]
+        front = rangeImage[90][2]      # distance to the front
         
         ratio = round(lidar_30 / lidar_0, 2)
         
+        # detecting if out of maze
         camImage = np.array(cam.getImageArray())
-        print(camImage[32][32])
         colour = np.array(camImage[32][32])
         colourCatch = False
         
@@ -139,31 +130,27 @@ def Maze(start, mode, mode_start):
                 colourCatch = True
             
             
-        
-
-        
-        """for i in range(len(colours)):
-            if colours[i][0] == colour[0]:
-                if colours[i][1] == colour[1]:
-                    if colours[i][2] == colour[2]:
-                        colourCatch = True"""
         if colourCatch:
-            print("CAUGHT")
+            stopMotors()
+            print("OUT OF MAZE")
             break
-
+        
+        # maze wall following
 
         # turn left if wall dead ahead
         if front < 0.24 and mode != 'wall_ahead':
             mode = 'wall_ahead'    
             motorLeft.setVelocity(1.1)
             motorRight.setVelocity(10)
+            #print("WALL AHEAD")
             continue
         
         # robot is too close to wall AND is going into the wall 
-        if lidar_0 < 0.08 and mode != 'collision_avoid' and ratio <= 1.15:
+        if lidar_0 < 0.09 and mode != 'collision_avoid' and ratio <= 1.15:
             mode = 'collision_avoid'
             motorRight.setVelocity(10)
             motorLeft.setVelocity(3)
+            #print("COLLISION AVOID")
             continue
         
         # robot was too close to the wall and is now turning left, go straight once it's parallel
@@ -171,6 +158,7 @@ def Maze(start, mode, mode_start):
             motorRight.setVelocity(10)
             motorLeft.setVelocity(10)
             mode = 'straight'
+            #print("COLLISION AVOID CONTINUE")
             continue
         
         # going parallel to the wall (lidar distances and wall make ~(30 60 90) triangle)
@@ -178,14 +166,16 @@ def Maze(start, mode, mode_start):
             mode = 'straight'   
             motorLeft.setVelocity(10)
             motorRight.setVelocity(10)
+            #print("STRAIGHT")
             continue
         
         # need to turn right (30* distance too short)
-        if ratio > 1.18 and mode != 'wall_ahead' and mode != 'right':
+        if ratio > 1.17 and mode != 'wall_ahead' and mode != 'right' and robot.getTime() - 0.1 > mode_start:
             mode = 'right'
             motorLeft.setVelocity(10)
             motorRight.setVelocity(3)
             mode_start = robot.getTime()
+            #print("RIGHT")
             continue
         
         # need to turn left (30* distance too long)
@@ -194,40 +184,46 @@ def Maze(start, mode, mode_start):
             motorLeft.setVelocity(3)
             motorRight.setVelocity(10)
             mode_start = robot.getTime()
+            #print("LEFT")
             continue
+        
+        pass
 
 
-
-
+# when robot is facing the beacon and just needs to close in and stop
 def hug_beacon(rangeImage):
-    if rangeImage[90][2] < 0.2:
+    if rangeImage[90][2] < 0.2 or rangeImage[80][2] < 0.21 or rangeImage[100][2] < 0.21 :
         motorLeft.setVelocity(0)
         motorRight.setVelocity(0)
+        print("BEACON REACHED")
+        
+        global mode
+        mode = 'finished'
 
+
+# returns true if given colour is close enough to the base colour
 def match_color(rgb):
     distance = np.sum(np.square(rgb - base_color))
     distance = np.sqrt(distance)
     return distance < 100
 
 
-def Beaconing(start, mode):
+# algorithm for the beaconing part, var mode is local
+def Beaconing():
+    print("BEACONING MODE")
+    global mode
     while robot.step(timestep) != -1:
-        if robot.getTime() - 1 < start_time:
-            continue
-            
-        if start:
-            base_color = np.array(cam_back.getImageArray())[32][32]
-            start = False
-            
+  
         # lidar data
         rangeImage = ds.getRangeImageArray()
         # camera data
         camImage = np.array(cam.getImageArray())
         
-        if match_color(camImage[32][32]):
+        if mode == 'free' and match_color(camImage[32][32]):
             motorLeft.setVelocity(10)
             motorRight.setVelocity(10)
             mode = 'hug'
+            print("HUG MODE")
         
         if mode == 'hug':
             hug_beacon(rangeImage)
@@ -237,4 +233,5 @@ def Beaconing(start, mode):
         pass
 
 Maze(start, mode, mode_start)
-Beaconing(start, mode)
+mode = 'free'
+Beaconing()
